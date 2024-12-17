@@ -23,7 +23,36 @@ namespace utilities
         /// <param name="response">响应对象，包含服务器的响应数据</param>
         public override void OnOperationResponse(short opreationCode, ReceiveResponse response)
         {
-            Debug.Log("处理服务器相应时代码"+opreationCode);
+            OpCode code = (OpCode)opreationCode;
+            switch (code)
+            {
+                case OpCode.Dialog:
+                {
+                    string message=(string)response.parameters[2];
+                    Debug.Log("收到服务器响应代码，响应代码为： "+opreationCode+"收到的retuenCode"+response.returnCode+"携带的信息为："+message);
+                }
+                    break;
+                case OpCode.BuyThing:
+                {
+                    string message=(string)response.parameters[3];
+                    Debug.Log("收到服务器响应代码，响应代码为： " + opreationCode + "收到的retuenCode" + response.returnCode + "携带的信息为：" +
+                              message); 
+                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            //Debug.Log("处理服务器相应时代码"+opreationCode);
+            /*if (opreationCode==0)
+            {
+                string message=(string)response.parameters[2];
+                Debug.Log("收到服务器响应代码，响应代码为： "+opreationCode+"收到的retuenCode"+response.returnCode+"携带的信息为："+message);
+            }else if (opreationCode==1)
+            {
+                string message=(string)response.parameters[3];
+                Debug.Log("收到服务器响应代码，响应代码为： " + opreationCode + "收到的retuenCode" + response.returnCode + "携带的信息为：" +
+                          message);
+            }*/
         }
         
         /// <summary>
@@ -33,7 +62,25 @@ namespace utilities
         /// <param name="dict">事件数据字典，包含事件相关的数据</param>
         public override void OnEvent(short eventCode, Dictionary<short, object> dict)
         {
-            Debug.Log("服务器处理事件"+eventCode);
+            EventCode code = (EventCode)eventCode;
+            switch (code)
+            {
+                case EventCode.GetAge:
+                {
+                    string message=(string)dict[ParameterCode.Age];
+                    Debug.Log("收到服务器事件代码，事件代码为： "+eventCode+"携带的信息为："+message);
+                }
+                    break;
+                case EventCode.SendThingName:
+                {
+                    string message=(string)dict[ParameterCode.ThingName];
+                    Debug.Log("收到服务器事件代码，事件代码为： "+eventCode+"携带的信息为："+message);
+                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
         }
         
         /// <summary>
